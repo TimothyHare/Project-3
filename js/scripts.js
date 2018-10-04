@@ -5,8 +5,8 @@ $("#name").focus();
 //                                 JOB ROLE SECTION
 // Text field for other option
 $("#other-title").hide()
-$("#title").on("click", function (){
-  if ($(this).val = "other"){
+$("#title").change(function (){
+  if ($(this).val() == "other"){
     $("#other-title").show();
   }else{
     $("#other-title").hide();
@@ -16,10 +16,12 @@ $("#title").on("click", function (){
 // T-Shirt Color
 const $colorOfShirt= $("#colors-js-puns");
 const $designOfShirt= $("#design");
+//appropriate theme when JS PUNS is chosen
 $colorOfShirt.hide();
-$designOfShirt.on("click", function(){
+$designOfShirt.change(function(){
   if($("#design option:selected").text()=== "Theme - JS Puns"){
     $colorOfShirt.show();
+     $("#color").val("cornflowerblue")
      $("#color option[value = cornflowerblue]").show();
      $("#color option[value = darkslategrey]").show();
      $("#color option[value = gold]").show();
@@ -30,9 +32,11 @@ $designOfShirt.on("click", function(){
   $colorOfShirt.hide();
 }
 });
-$designOfShirt.on("click", function() {
+//appropriate theme when HEART JS is chosen
+$designOfShirt.change(function() {
     if ($("#design option:selected").val() === "heart js") {
      $colorOfShirt.show();
+      $("#color").val("tomato");
       $("#color option[value = tomato]").show();
       $("#color option[value = steelblue]").show();
       $("#color option[value = dimgrey]").show();
@@ -43,7 +47,8 @@ $designOfShirt.on("click", function() {
     }
   });
 
-//                             ACTIVITY REGISTRATION
+//                          ACTIVITY REGISTRATION
+//cost variable and append paragraphs that can let cost change
 let cost= 0;
 $(".activities").append("<p></p>");
 
@@ -115,7 +120,6 @@ $("input[name='js-frameworks']").on("click", function(){
  });
 
 // Adds correct amount to total for non conflicting options
-
 //When BUILD TOOLS is selected
 $("input[name='build-tools']").on("click", function(){
   if($(this).is(":checked")){
@@ -154,5 +158,122 @@ $("input[name='build-tools']").on("click", function(){
   });
 
 //              PAYMENT INFO SECTION AND FORM VALIDATION
+// credit card option is default
 $("#payment").val("credit card");
-$("P")
+$("P").eq(1).hide();
+$("p").eq(2).hide();
+//when card is chosen only card info available
+$("#payment").change(function(){
+  if ($("#payment option:selected").val()==="credit card"){
+    $(".credit-card").show();
+    $(".col-6 col").show();
+    $(".col-3 col").show();
+    $("#exp-month").show();
+    $("#exp-year").show();
+    $("P").eq(1).hide();
+    $("p").eq(2).hide();
+  }
+});
+// when paypal is chosen only paypal info available
+$("#payment").change(function(){
+  if ($("#payment option:selected").val()==="paypal"){
+    $(".credit-card").hide();
+    $(".col-6 col").hide();
+    $(".col-3 col").hide();
+    $("#exp-month").hide();
+    $("#exp-year").hide();
+    $("P").eq(1).show();
+    $("p").eq(2).hide();
+  }
+});
+// when bitcion is chosen only bitcoin info available
+$("#payment").change(function(){
+  if ($("#payment option:selected").val()==="bitcoin"){
+    $(".credit-card").hide();
+    $(".col-6 col").hide();
+    $(".col-3 col").hide();
+    $("#exp-month").hide();
+    $("#exp-year").hide();
+    $("P").eq(1).hide();
+    $("p").eq(2).show();
+  }
+});
+
+$("#cc-num").attr({"maxlength":16, "minlength":13});
+$("#zip").attr({"maxlength":5, "minlength":5});
+$("#cvv").attr({"maxlength":3, "minlength":3});
+
+let nameEr = "<p> Please Enter Your Name<p>";
+let emailEr = "<p> Please Enter Valid Email. Example dave@teamtreehouse.com <p>"
+let activityEr = "<p> please slect an activity <p>";
+let designEr = "<p> Please select a design <p>";
+let zipEr = "<p> Zip code must be at 5  numeric digits <p>";
+let ccEr = "<p> Credit Card must be between 13 numeric digits and 16 numeric digits <p>";
+let cvvEr = "<p> CVV must be 3 numeric digits <p>";
+let payEr = "<p> Please select payment option <p>";
+
+
+$("form div: first").append(nameEr).append(emailEr).append(activityEr).append(designEr).append(zipEr).append(ccEr).append(cvvEr).append(payEr);
+$("form div: first p: contains ('Name')").hide();
+$("form div: first P: contains ('Email')").hide();
+$("form div: first P: contains ('Activity')").hide();
+$("form div: first p: contains ('Design')").hide();
+$("form div: first p: contains ('Zip')").hide();
+$("form div: first p: contains ('Credit Card')").hide();
+$("form div: first p: contains ('CVV')").hide();
+$("form div: first p: contains ('Payment Option')").hide();
+
+$('button').on('click', function(event) {
+
+// Name Validation
+if ($("name").val() ==""){
+  $("form div: first p: contains ('Name')").show();
+  $("form div: first p: contains ('Name')").css("color","red");
+  $("#name").css("borderColor","red")
+event.preventDefault();
+alert("Name Required");
+}else{
+$("form div: first p: contains ('Name')").hide();
+$("#name").css("borderColor","black");
+}
+
+// Email Validation
+if ($('#mail').val() == "" || validateEmail($("#mail").val())) {
+   $("form div:first p:contains ('Email')").show();
+   $("form div:first p:contains ('Email')").css('color', 'red');
+   $("#mail").css("borderColor", "red");
+   event.preventDefault();
+   alert('Enter Email address');
+ } else {
+   $('form div:first p:contains("Email")').hide();
+   $('#mail').css("borderColor", "black");
+ }
+ function validateEmail(sampleEmail) {
+var filter = /^[\w-.+]+@[a-zA-Z0-9.-]+.[a-zA-z0-9]{2,4}$/;
+  if (filter.test(sampleEmail)) {
+    return false;
+  } else {
+      return true;
+    }
+  }
+
+  //Activity Validation
+  if ($(".activities input:checkbox:checked").length < 1) {
+    event.preventDefault();
+    $("form div:first p:contains('Activity')").show();
+    $("form div:first p:contains('Activity')").css("color", "red");
+    alert("Select Activity");
+  } else {
+    $("form div:first p:contains('Activity')").hide();
+  }
+
+  // Design Validation
+  if ($("#design option:first").is(":checked")) {
+    $("form div:first p:contains('Design')").show();
+    $("form div:first p:contains('Design')").css("color", "red");
+    event.preventDefault();
+    alert("Select Design");
+  } else {
+    $("form div:first p:contains('Design')").hide();
+  }
+});
