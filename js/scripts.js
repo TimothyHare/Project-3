@@ -217,6 +217,9 @@ $("#zip").attr({"maxlength":5, "minlength":5});
 //CVV number length
 $("#cvv").attr({"maxlength":3, "minlength":3});
 
+//create paragrapgh element
+var para = document.createElement("p")
+
 //Error variables
 let nameEr = "<p> Please Enter Your Name<p>";
 let emailEr = "<p> Please Enter Valid Email. Example dave@teamtreehouse.com <p>"
@@ -228,37 +231,36 @@ let cvvEr = "<p> CVV must be 3 numeric digits <p>";
 let payEr = "<p> Please select payment option <p>";
 
 
-$("form div: first").append(nameEr).append(emailEr).append(activityEr).append(designEr).append(zipEr).append(ccEr).append(cvvEr).append(payEr);
-$("form div: first p: contains ('Name')").hide();
-$("form div: first P: contains ('Email')").hide();
-$("form div: first P: contains ('Activity')").hide();
-$("form div: first p: contains ('Design')").hide();
-$("form div: first p: contains ('Zip')").hide();
-$("form div: first p: contains ('Credit Card')").hide();
-$("form div: first p: contains ('CVV')").hide();
-$("form div: first p: contains ('Payment Option')").hide();
+$("form div:first").append(nameEr).append(emailEr).append(activityEr).append(designEr).append(zipEr).append(ccEr).append(cvvEr).append(payEr);
+$("form div:first p:contains('Name')").hide();
+$("form div:first P:contains('Email')").hide();
+$("form div:first P:contains('Activity')").hide();
+$("form div:first p:contains('Design')").hide();
+$("form div:first p:contains('Zip')").hide();
+$("form div:first p:contains('Credit Card')").hide();
+$("form div:first p:contains('CVV')").hide();
+$("form div:first p:contains('Payment Option')").hide();
 
-$('button').on('click', function(event) {
+$("button").on("click", function(event) {
 
 // Name Validation
-if ($("name").val() ==""){
-  $("form div: first p: contains ('Name')").show();
-  $("form div: first p: contains ('Name')").css("color","red");
+if ($("#name").val() ==""){
+  $("form div:first p:contains('Name')").show();
+  $("form div:first p:contains('Name')").css("color","red");
   $("#name").css("borderColor","red")
 event.preventDefault();
-alert("Name Required");
 }else{
-$("form div: first p: contains ('Name')").hide();
+$("form div: first p: contains('Name')").hide();
 $("#name").css("borderColor","black");
 }
 
 // Email Validation
-if ($('#mail').val() == "" || validateEmail($("#mail").val())) {
-   $("form div:first p:contains ('Email')").show();
-   $("form div:first p:contains ('Email')").css('color', 'red');
+if ($("form div:first p: contains(''#mail')").val() == "" || validateEmail($("#mail").val())) {
+   $("form div:first p:contains('Email')").show();
+   $("form div:first p:contains('Email')").css('color', 'red');
    $("#mail").css("borderColor", "red");
    event.preventDefault();
-   alert('Enter Email address');
+
  } else {
    $('form div:first p:contains("Email")').hide();
    $('#mail').css("borderColor", "black");
@@ -277,7 +279,7 @@ var filter = /^[\w-.+]+@[a-zA-Z0-9.-]+.[a-zA-z0-9]{2,4}$/;
     event.preventDefault();
     $("form div:first p:contains('Activity')").show();
     $("form div:first p:contains('Activity')").css("color", "red");
-    alert("Select Activity");
+
   } else {
     $("form div:first p:contains('Activity')").hide();
   }
@@ -287,7 +289,7 @@ var filter = /^[\w-.+]+@[a-zA-Z0-9.-]+.[a-zA-z0-9]{2,4}$/;
     $("form div:first p:contains('Design')").show();
     $("form div:first p:contains('Design')").css("color", "red");
     event.preventDefault();
-    alert("Select Design");
+
   } else {
     $("form div:first p:contains('Design')").hide();
   }
@@ -297,7 +299,7 @@ var filter = /^[\w-.+]+@[a-zA-Z0-9.-]+.[a-zA-z0-9]{2,4}$/;
 if (($("#payment option[value='credit card']").is(":checked") && $("#zip").val() == "" ) || ($("#payment option[value='credit card']").is(":checked") && $("#zip").val().length < 5 ) ){
           error = 1;
           $("form div:first p:contains('Zip Code')").show();
-          alert("Enter 5 Digit Zip Code");
+
           $("form div:first p:contains('Zip Code')").css("color", "red");
           $("#zip").css('borderColor', 'red');
         } else {
@@ -309,7 +311,7 @@ if (($("#payment option[value='credit card']").is(":checked") && $("#zip").val()
 if ($("#payment option[value='credit card']").is(":checked") && ccVal == "") {
          error = 1;
          $("form div:first p:contains('Credit Card')").show();
-         alert("Enter 13 to 16 digit card number");
+
          $("form div:first p:contains('Credit Card')").css("color", "red");
          $("#cc-num").css("borderColor", "red");
        } else {
@@ -321,7 +323,7 @@ if ($("#payment option[value='credit card']").is(":checked") && ccVal == "") {
        if (($("#payment option[value='credit card']").is(":checked") && $('#cvv').val() == "" ) || ($("#payment option[value='credit card']").is(":checked") && $('#cvv').val().length < 3) ){
           error = 1;
           $("form div:first p:contains('CVV')").show();
-          alert("Enter 3 digit CVV code");
+
           $("form div:first p:contains('CVV')").css("color", "red");
           $("#cvv").css("borderColor", "red");
         } else {
@@ -334,18 +336,8 @@ if ($("#payment option[value='credit card']").is(":checked") && ccVal == "") {
           $("form div:first p:contains('Payment Option')").show();
           $("form div:first p:contains('Payment Option')").css("color", "red");
           event.preventDefault();
-          alert("Select Payment Option");
+
           error = 1;
         } else {
           $("form div:first p:contains('Payment Option')").hide();
         }
-
-        if (error) {
-            return false;
-        } else {
-            return true;
-
-        }
-
-    });
-});
