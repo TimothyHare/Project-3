@@ -199,10 +199,25 @@ $("#payment").change(function(){
   }
 });
 
+// Only Accept Numeric input
+$(function () {
+  //keypress function for credit card, zip code, or cvv
+  $("#cc-num,#zip,#cvv").keypress(function (evt) {
+     // error message for non numeric input
+     if (evt.which != 8 && evt.which != 0 && (evt.which < 48 || evt.which > 57)) {
+               return false;
+    }
+   });
+});
+
+//credit card number length
 $("#cc-num").attr({"maxlength":16, "minlength":13});
+//zip code number length
 $("#zip").attr({"maxlength":5, "minlength":5});
+//CVV number length
 $("#cvv").attr({"maxlength":3, "minlength":3});
 
+//Error variables
 let nameEr = "<p> Please Enter Your Name<p>";
 let emailEr = "<p> Please Enter Valid Email. Example dave@teamtreehouse.com <p>"
 let activityEr = "<p> please slect an activity <p>";
@@ -276,4 +291,61 @@ var filter = /^[\w-.+]+@[a-zA-Z0-9.-]+.[a-zA-z0-9]{2,4}$/;
   } else {
     $("form div:first p:contains('Design')").hide();
   }
+});
+
+//Zip Code Validation
+if (($("#payment option[value='credit card']").is(":checked") && $("#zip").val() == "" ) || ($("#payment option[value='credit card']").is(":checked") && $("#zip").val().length < 5 ) ){
+          error = 1;
+          $("form div:first p:contains('Zip Code')").show();
+          alert("Enter 5 Digit Zip Code");
+          $("form div:first p:contains('Zip Code')").css("color", "red");
+          $("#zip").css('borderColor', 'red');
+        } else {
+          $("form div:first p:contains('Zip Code')").hide();
+          $("#zip").css("borderColor", "black");
+}
+
+// Credit Card Validation
+if ($("#payment option[value='credit card']").is(":checked") && ccVal == "") {
+         error = 1;
+         $("form div:first p:contains('Credit Card')").show();
+         alert("Enter 13 to 16 digit card number");
+         $("form div:first p:contains('Credit Card')").css("color", "red");
+         $("#cc-num").css("borderColor", "red");
+       } else {
+         $("form div:first p:contains('Credit Card')").hide();
+         $("#cc-num").css("borderColor", "black");
+       }
+
+//CVV Validation
+       if (($("#payment option[value='credit card']").is(":checked") && $('#cvv').val() == "" ) || ($("#payment option[value='credit card']").is(":checked") && $('#cvv').val().length < 3) ){
+          error = 1;
+          $("form div:first p:contains('CVV')").show();
+          alert("Enter 3 digit CVV code");
+          $("form div:first p:contains('CVV')").css("color", "red");
+          $("#cvv").css("borderColor", "red");
+        } else {
+          $("form div:first p:contains('CVV')").hide();
+          $("#cvv").css("borderColor", "black");
+        }
+
+//Payment Option Selection Validation
+        if ($("#design option:first").is(":checked")) {
+          $("form div:first p:contains('Payment Option')").show();
+          $("form div:first p:contains('Payment Option')").css("color", "red");
+          event.preventDefault();
+          alert("Select Payment Option");
+          error = 1;
+        } else {
+          $("form div:first p:contains('Payment Option')").hide();
+        }
+
+        if (error) {
+            return false;
+        } else {
+            return true;
+
+        }
+
+    });
 });
