@@ -198,146 +198,215 @@ $("#payment").change(function(){
     $("p").eq(2).show();
   }
 });
-
-// Only Accept Numeric input
-$(function () {
-  //keypress function for credit card, zip code, or cvv
-  $("#cc-num,#zip,#cvv").keypress(function (evt) {
-     // error message for non numeric input
-     if (evt.which != 8 && evt.which != 0 && (evt.which < 48 || evt.which > 57)) {
-               return false;
-    }
-   });
-});
-
-//credit card number length
-$("#cc-num").attr({"maxlength":16, "minlength":13});
-//zip code number length
-$("#zip").attr({"maxlength":5, "minlength":5});
-//CVV number length
-$("#cvv").attr({"maxlength":3, "minlength":3});
-
-//create paragrapgh element
-var para = document.createElement("p")
-
-//Error variables
-let nameEr = "<p> Please Enter Your Name<p>";
-let emailEr = "<p> Please Enter Valid Email. Example dave@teamtreehouse.com <p>"
-let activityEr = "<p> please slect an activity <p>";
-let designEr = "<p> Please select a design <p>";
-let zipEr = "<p> Zip code must be at 5  numeric digits <p>";
-let ccEr = "<p> Credit Card must be between 13 numeric digits and 16 numeric digits <p>";
-let cvvEr = "<p> CVV must be 3 numeric digits <p>";
-let payEr = "<p> Please select payment option <p>";
-
-
-$("form div:first").append(nameEr).append(emailEr).append(activityEr).append(designEr).append(zipEr).append(ccEr).append(cvvEr).append(payEr);
-$("form div:first p:contains('Name')").hide();
-$("form div:first P:contains('Email')").hide();
-$("form div:first P:contains('Activity')").hide();
-$("form div:first p:contains('Design')").hide();
-$("form div:first p:contains('Zip')").hide();
-$("form div:first p:contains('Credit Card')").hide();
-$("form div:first p:contains('CVV')").hide();
-$("form div:first p:contains('Payment Option')").hide();
-
-$("button").on("click", function(event) {
-
-// Name Validation
-if ($("#name").val() ==""){
-  $("form div:first p:contains('Name')").show();
-  $("form div:first p:contains('Name')").css("color","red");
-  $("#name").css("borderColor","red")
-event.preventDefault();
-}else{
-$("form div: first p: contains('Name')").hide();
-$("#name").css("borderColor","black");
-}
-
-// Email Validation
-if ($("form div:first p: contains(''#mail')").val() == "" || validateEmail($("#mail").val())) {
-   $("form div:first p:contains('Email')").show();
-   $("form div:first p:contains('Email')").css('color', 'red');
-   $("#mail").css("borderColor", "red");
-   event.preventDefault();
-
- } else {
-   $('form div:first p:contains("Email")').hide();
-   $('#mail').css("borderColor", "black");
- }
- function validateEmail(sampleEmail) {
-var filter = /^[\w-.+]+@[a-zA-Z0-9.-]+.[a-zA-z0-9]{2,4}$/;
-  if (filter.test(sampleEmail)) {
-    return false;
-  } else {
-      return true;
-    }
-  }
-
-  //Activity Validation
-  if ($(".activities input:checkbox:checked").length < 1) {
-    event.preventDefault();
-    $("form div:first p:contains('Activity')").show();
-    $("form div:first p:contains('Activity')").css("color", "red");
-
-  } else {
-    $("form div:first p:contains('Activity')").hide();
-  }
-
-  // Design Validation
-  if ($("#design option:first").is(":checked")) {
-    $("form div:first p:contains('Design')").show();
-    $("form div:first p:contains('Design')").css("color", "red");
-    event.preventDefault();
-
-  } else {
-    $("form div:first p:contains('Design')").hide();
+// When only the select method is chosen
+$("#payment").change(function(){
+  if ($("#payment option:selected").val() === "select_method"){
+  $(".credit-card").hide();
+  $(".col-6 col").hide();
+  $(".col-3 col").hide();
+  $("#exp-month").hide();
+  $("#exp-year").hide();
+  $("p").eq(1).hide();
+  $("p").eq(2).hide();
   }
 });
 
-//Zip Code Validation
-if (($("#payment option[value='credit card']").is(":checked") && $("#zip").val() == "" ) || ($("#payment option[value='credit card']").is(":checked") && $("#zip").val().length < 5 ) ){
-          error = 1;
-          $("form div:first p:contains('Zip Code')").show();
+//Appended spans to alert user for non-submition
+$("form").append("<span></span>");
+$("form").append("<span></span>");
+$("form").append("<span></span>");
+$("form").append("<span></span>");
+$("form").append("<span></span>");
+$("form").append("<span></span>");
+$("form").append("<span></span>");
+$("#mail").prev().append("<div></div>");
 
-          $("form div:first p:contains('Zip Code')").css("color", "red");
-          $("#zip").css('borderColor', 'red');
-        } else {
-          $("form div:first p:contains('Zip Code')").hide();
-          $("#zip").css("borderColor", "black");
-}
+//NAME validation
+$(".container").submit(function(){
+  //form submition variable
+  let isFormValid = true;
+  $("#name:input").each(function(){
+    if ($.trim($(this).val()).length == 0){
+      //if section is not filled in, input highlighted
+      $(this).addClass("highlight").css("border", "1px solid red");
+      //the form is not submitted
+      isFormValid = false;
+      //span stating the form will not submit
+      $("form span:nth-of-type(1n)").text("Please enter your name.").css("display", "block").css("color", "red");
+  }
+    else{
+     //when fixed, things return to normal
+     $(this).removeClass("highlight").css("border", "none");
+     //remove span
+     $("form span:nth-of-type(1n)").text("Please enter your name.").css("display", "none").css("color", "red");
 
-// Credit Card Validation
-if ($("#payment option[value='credit card']").is(":checked") && ccVal == "") {
-         error = 1;
-         $("form div:first p:contains('Credit Card')").show();
-
-         $("form div:first p:contains('Credit Card')").css("color", "red");
-         $("#cc-num").css("borderColor", "red");
-       } else {
-         $("form div:first p:contains('Credit Card')").hide();
-         $("#cc-num").css("borderColor", "black");
-       }
-
-//CVV Validation
-       if (($("#payment option[value='credit card']").is(":checked") && $('#cvv').val() == "" ) || ($("#payment option[value='credit card']").is(":checked") && $('#cvv').val().length < 3) ){
-          error = 1;
-          $("form div:first p:contains('CVV')").show();
-
-          $("form div:first p:contains('CVV')").css("color", "red");
-          $("#cvv").css("borderColor", "red");
-        } else {
-          $("form div:first p:contains('CVV')").hide();
-          $("#cvv").css("borderColor", "black");
         }
+    });
+    return isFormValid;
+});
+// EMAIL validation
+  $(".container").submit(function(){
+    //form submition variable
+    let isFormValid = true;
+    $("#mail:input").each(function(){
+        if ($.trim($(this).val()).length == 0){
+            //if section not filled, input highlighted
+            $(this).addClass("highlight").css("border", "1px solid red");
+            isFormValid = false;
+            // span stating form will not submit
+            $("form span:nth-of-type(2n)").text("Please enter a valid email.").css("display", "block").css("color", "red");
+        } else{
+            //when fixed things return to normal
+            $(this).removeClass("highlight").css("border", "none");
+            //remove span
+            $("form span:nth-of-type(2n)").text("Please enter a valid email.").css("display", "none").css("color", "red");
 
-//Payment Option Selection Validation
-        if ($("#design option:first").is(":checked")) {
-          $("form div:first p:contains('Payment Option')").show();
-          $("form div:first p:contains('Payment Option')").css("color", "red");
-          event.preventDefault();
-
-          error = 1;
-        } else {
-          $("form div:first p:contains('Payment Option')").hide();
         }
+    });
+    return isFormValid;
+});
+
+//Only valid emails
+  $("#mail").keyup(function(){
+    $("#mail").filter(function(){
+    var email=$("#mail").val();
+    var emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
+     if( !emailReg.test( email ) ) {
+      $("label div").text("Enter a valid email.").css("display", "block").css("color", "red");
+     } else {
+      $("label div").text("Enter a valid email.").css("display", "none");
+     }
+    });
+  });
+
+  //ACTIVITIES Validation
+  $(".container").submit(function(){
+    //form submition variable
+    let isFormValid = true;
+    $(".activities").each(function(){
+        if ($(".activities input:checked").length < 1){
+           //if section not checked,name highlighted
+            $(this).addClass("highlight").css("display", "block").css('color', 'red');
+            isFormValid = false;
+            //span stating form will not submit
+            $("form span:nth-of-type(3n)").text("Choose at least one activity.").css("display", "block").css("color", "red");
+        }
+        else {
+            //when fixed, things return to normal
+            $(this).removeClass("highlight").css("display", "block").css('color', 'black');
+            //remove span
+            $("form span:nth-of-type(3n)").text("Choose at least one activity.").css("display", "none").css("color", "red");
+
+        }
+    });
+    return isFormValid;
+});
+// CREDIT CARD NUMBER validation
+$(".container").submit(function(){
+  //form submition variable
+  let isFormValid = true;
+  if ($("#payment option:eq(1)").is(":selected")){
+  $("#cc-num:input").each(function(){
+    if ($.trim($(this).val()).length < 13 || !$.isNumeric($(this).val())) {
+        //if section is not filled correctly, input is highlighted
+        $(this).addClass("highlight").css("border", "1px solid red");
+        isFormValid = false;
+        //span stating form will not submit
+        $("form span:nth-of-type(4n)").text("Credit Card Number must be at least 13 digits long.").css("display", "block").css("color", "red");
+    } else if (($(this).val()).length > 16 || !$.isNumeric($(this).val())) {
+      //if section is not filled correctly, input is highlighted
+      $(this).addClass("highlight").css("border", "1px solid red");
+      isFormValid = false;
+      //span stating form will not submit
+      $("form span:nth-of-type(4n)").text("Credit Card Number must be 16 or fewer digits long.").css("display", "block").css("color", "red");
+  }
+    else{
+        //when fixed, things return to normal
+        $(this).removeClass("highlight").css("border", "none");
+        //remove span
+        $("form span:nth-of-type(4n)").text("Enter a valid credit card number. Must be 13-16 digits long.").css("display", "none").css("color", "red");
+    }
+  });
+  } else {
+    isFormValid = true;
+  }
+return isFormValid;
+});
+    //ZIP CODE Validation
+    $(".container").submit(function(){
+      //form submition variable
+      let isFormValid = true;
+      if ($("#payment option:eq(1)").is(":selected")){
+    $("#zip:input").each(function(){
+      if ($.trim($(this).val()).length < 5 || ($(this).val()).length > 5 || !$.isNumeric($(this).val())){
+        //if section not filled correctly, input is highlighted
+        $(this).addClass("highlight").css("border", "1px solid red");
+        //span stating the form will not submit
+        $("form span:nth-of-type(5n)").text("Enter a valid zip code.").css("display", "block").css("color", "red");
+        isFormValid = false;
+    } else{
+        //when fixed, things return to normal
+        $(this).removeClass("highlight").css("border", "none");
+        //remove span
+        $("form span:nth-of-type(5n)").text("Enter a valid zip code.").css("display", "none").css("color", "red");
+      }
+    });
+  } else {
+    isFormValid = true;
+  }
+return isFormValid;
+});
+    //CVV validation
+    $(".container").submit(function(){
+      //form submition variable
+      let isFormValid = true;
+      if ($("#payment option:eq(1)").is(":selected")){
+        $("#cvv:input").each(function(){
+          if ($.trim($(this).val()).length < 3 || ($(this).val()).length > 3 || !$.isNumeric($(this).val())){
+            //if section not filled correctly, input is highlighted
+            $(this).addClass("highlight").css("border", "1px solid red");
+            isFormValid = false;
+            //span stating the form will not submit
+            $("form span:nth-of-type(6n)").text("Enter a valid cvv.").css("display", "block").css("color", "red");
+          } else {
+            //when fixed, things return to normal
+            $(this).removeClass("highlight").css("border", "none");
+            //remove span
+            $("form span:nth-of-type(6n)").text("Enter a valid cvv.").css("display", "none").css("color", "red");
+          }
+        });
+      } else {
+        isFormValid = true;
+      }
+return isFormValid;
+    });
+//SELECT PAYMENT validation
+$(".container").submit(function(){
+  //form submition variable
+  let isFormValid = true;
+  if ($("#payment option:eq(0)").is(":selected")){
+    $("#payment").addClass("highlight").css("border", "1px solid red");
+    isFormValid = false;
+    //span stating the form will not submit
+    $("form span:nth-of-type(7n)").text("Enter a source of payment.").css("display", "block").css("color", "red");
+  } else {
+     //when fixed, things return to normal
+     $("form span:nth-of-type(7n)").text("Enter a source of payment.").css("display", "none").css("color", "red");
+     isFormValid = true;
+  }
+  return isFormValid;
+});
+
+//If page is submitted with error, and user changes payment option, previous info is erased
+$(".container").submit(function(){
+  //form submition variable
+  let isFormValid = true;
+    $("#payment").change(function(){
+     $("#cvv:input").removeClass("highlight").css("border", "none");
+     $("#zip:input").removeClass("highlight").css("border", "none");
+     $("#cc-num:input").removeClass("highlight").css("border", "none");
+     $("#payment").removeClass("highlight").css("border", "none");
+     isFormValid = true;
+  })
+  return isFormValid;
+});
